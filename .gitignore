@@ -1,0 +1,27 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+# db.sqlite3  <-- Removed from ignore to allow pushing to GitHub
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Environment variables
+.env
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
