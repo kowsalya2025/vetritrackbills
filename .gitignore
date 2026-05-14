@@ -6,8 +6,7 @@ __pycache__/
 local_settings.py
 # db.sqlite3  <-- Removed from ignore to allow pushing to GitHub
 db.sqlite3-journal
-media/
-staticfiles/
+
 
 # Environment variables
 .env
