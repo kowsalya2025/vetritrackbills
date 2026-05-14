@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status - Vetri PinTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/new_dashboard.css">
+</head>
+<body>
+    <main class="payment-status-page">
+        <section class="payment-status-card">
+            <div class="payment-status-icon {{ order.status }}">
+                {% if order.status == 'success' %}
+                <i class="fas fa-check"></i>
+                {% elif order.status == 'failed' %}
+                <i class="fas fa-times"></i>
+                {% else %}
+                <i class="fas fa-clock"></i>
+                {% endif %}
+            </div>
+            <h1>Payment {{ order.get_status_display }}</h1>
+            <p class="payment-status-subtitle">{{ order.bill.name }}</p>
+
+            <dl class="payment-status-details">
+                <div>
+                    <dt>Order ID</dt>
+                    <dd>{{ order.merchant_order_id }}</dd>
+                </div>
+                <div>
+                    <dt>Amount</dt>
+                    <dd>&#8377; {{ order.amount|floatformat:2 }}</dd>
+                </div>
+                <div>
+                    <dt>Provider</dt>
+                    <dd>{{ order.get_provider_display }}</dd>
+                </div>
+                <div>
+                    <dt>Status</dt>
+                    <dd>{{ order.get_status_display }}</dd>
+                </div>
+            </dl>
+
+            {% if order.failure_reason %}
+            <p class="payment-warning">{{ order.failure_reason }}</p>
+            {% endif %}
+
+            <div class="payment-safety-copy">
+                <i class="fas fa-shield-alt"></i>
+                <span>Vetri PinTrack never asks for UPI PIN, OTP, CVV, or card PIN. Final payment status is verified by backend callback.</span>
+            </div>
+
+            <div class="payment-timeline">
+                <div class="timeline-step done">
+                    <span><i class="fas fa-file-invoice"></i></span>
+                    <p>Order Created</p>
+                </div>
+                <div class="timeline-step {% if order.status != 'created' %}done{% endif %}">
+                    <span><i class="fas fa-mobile-alt"></i></span>
+                    <p>Sent to Gateway</p>
+                </div>
+                <div class="timeline-step {% if order.status == 'success' %}done{% elif order.status == 'failed' or order.status == 'expired' %}failed{% endif %}">
+                    <span>
+                        {% if order.status == 'success' %}
+                        <i class="fas fa-check"></i>
+                        {% elif order.status == 'failed' or order.status == 'expired' %}
+                        <i class="fas fa-times"></i>
+                        {% else %}
+                        <i class="fas fa-clock"></i>
+                        {% endif %}
+                    </span>
+                    <p>{{ order.get_status_display }}</p>
+                </div>
+            </div>
+
+            {% if attempts %}
+            <div class="attempt-list">
+                <h2>Payment Activity</h2>
+                {% for attempt in attempts %}
+                <div>
+                    <strong>{{ attempt.get_status_display }}</strong>
+                    <span>{{ attempt.created_at|date:"d/m/Y h:i A" }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="payment-actions">
+                {% if order.status == 'success' %}
+                <a class="btn-pay btn-link-pay" href="{% url 'download_receipt' order.merchant_order_id %}">Download Receipt</a>
+                {% elif order.status == 'failed' or order.status == 'expired' %}
+                <form method="post" action="{% url 'start_bill_payment' order.bill.id %}">
+                    {% csrf_token %}
+                    <button class="btn-pay" type="submit">Retry Payment</button>
+                </form>
+                {% endif %}
+                <a class="btn-pay btn-link-pay secondary-action" href="{% url 'dashboard' %}">Back to Dashboard</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

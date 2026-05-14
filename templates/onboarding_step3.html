@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Set Up Your Finances - Vetri PinTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/onboarding.css">
+</head>
+<body>
+    <div class="onboarding-container">
+        <header class="onboarding-header">
+            <div class="logo">
+                <img src="/static/images/vetrilogo.png" alt="Vetri PinTrack logo">
+            </div>
+        </header>
+
+        <main class="onboarding-main">
+            <h1 class="onboarding-title">Let's Set Up Your Finances ⭐</h1>
+            <p class="onboarding-subtitle">Let's Set Up Your Finances</p>
+
+            <div class="onboarding-card">
+                <h2 class="card-title">Where do you manage your money?</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="methods" value="bank" id="bank">
+                            <label for="bank">Bank Account</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="methods" value="credit_card" id="credit_card">
+                            <label for="credit_card">Credit card</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="methods" value="upi" id="upi">
+                            <label for="upi">UPI</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="methods" value="wallet" id="wallet">
+                            <label for="wallet">Wallet</label>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-back" onclick="window.location.href='{% url 'onboarding_step2' %}'">Back</button>
+                        <button type="submit" class="btn-continue">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer class="onboarding-footer">
+            <p class="copyright">&copy; 2026 Vetri PinTrack. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="#">Help Center</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

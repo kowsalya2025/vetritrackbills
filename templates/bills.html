@@ -1,0 +1,163 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Bills{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/bills.css' %}">
+{% endblock %}
+
+{% block page_title %}Bills{% endblock %}
+{% block page_subtitle %}Track and manage all your recurring payments{% endblock %}
+
+{% block content %}
+<div class="bills-container">
+    <!-- Summary Section -->
+    <div class="bills-summary-grid">
+        <div class="summary-card card-total">
+            <div class="card-info">
+                <h3>Total Bills</h3>
+                <p>₹ {{ total_bills|floatformat:2 }}</p>
+            </div>
+            <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+        </div>
+        <div class="summary-card card-paid">
+            <div class="card-info">
+                <h3>Paid This Month</h3>
+                <p>₹ {{ paid_this_month|floatformat:2 }}</p>
+            </div>
+            <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="summary-card card-pending">
+            <div class="card-info">
+                <h3>Pending Bills</h3>
+                <p>₹ {{ pending_bills|floatformat:2 }}</p>
+            </div>
+            <div class="card-icon"><i class="fas fa-exclamation-circle"></i></div>
+        </div>
+    </div>
+
+    <!-- Bills List -->
+    <div class="bills-list-card">
+        <div class="list-header">
+            <h2>Your Bills</h2>
+            <button class="add-bill-btn" onclick="openBillModal()">Add New Bill</button>
+        </div>
+
+        <div class="bills-list">
+            {% for bill in bills %}
+            <div class="bill-item">
+                <div class="bill-left">
+                    <div class="bill-icon 
+                        {% if bill.category == 'electricity' %}icon-electricity
+                        {% elif bill.category == 'gas' %}icon-gas
+                        {% elif bill.category == 'internet' %}icon-internet
+                        {% elif bill.category == 'mobile' %}icon-mobile
+                        {% else %}icon-other{% endif %}">
+                        <i class="fas 
+                            {% if bill.category == 'electricity' %}fa-bolt
+                            {% elif bill.category == 'gas' %}fa-fire
+                            {% elif bill.category == 'internet' %}fa-wifi
+                            {% elif bill.category == 'mobile' %}fa-mobile-alt
+                            {% else %}fa-file-invoice{% endif %}"></i>
+                    </div>
+                    <div class="bill-info">
+                        <h4>{{ bill.name }} 
+                            <span class="status-badge status-{{ bill.status }}">
+                                {{ bill.get_status_display }}
+                            </span>
+                        </h4>
+                        <div class="bill-details">
+                            ID: {{ bill.reference_number|default:"N/A" }} • Due: {{ bill.due_date|date:"d M Y" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="bill-right">
+                    <div class="bill-amount">₹ {{ bill.amount|floatformat:2 }}</div>
+                    {% if bill.status != 'paid' %}
+                    <form method="POST" action="{% url 'start_bill_payment' bill.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="pay-btn">Pay Now</button>
+                    </form>
+                    {% else %}
+                    <button class="pay-btn" disabled>Paid</button>
+                    {% endif %}
+                    <form method="POST" action="{% url 'delete_bill' bill.id %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this bill?');">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn" style="background: none; border: none; cursor: pointer; color: #64748b; padding: 5px;"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state" style="text-align: center; padding: 40px;">
+                <img src="{% static 'images/bills.png' %}" alt="No bills" style="width: 150px; opacity: 0.5; margin-bottom: 20px;">
+                <p style="color: #718096;">No recurring bills found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Add Bill Modal -->
+<div id="billModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New Bill</h2>
+            <span style="cursor: pointer; font-size: 24px; color: #a0aec0;" onclick="closeBillModal()">&times;</span>
+        </div>
+        <form method="POST" action="{% url 'add_bill' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Bill Name*</label>
+                    <input type="text" name="name" class="form-control" placeholder="e.g. Electricity Bill(TNEB)" required>
+                </div>
+                <div class="form-group">
+                    <label>Bill ID / Consumer Number*</label>
+                    <input type="text" name="reference_number" class="form-control" placeholder="Enter ID" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" class="form-control">
+                        <option value="electricity">Electricity</option>
+                        <option value="mobile">Mobile Recharge</option>
+                        <option value="internet">Internet</option>
+                        <option value="gas">Gas</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Provider</label>
+                    <input type="text" name="provider" class="form-control" placeholder="e.g. TNEB, Airtel">
+                </div>
+                <div class="form-group">
+                    <label>Due Date*</label>
+                    <input type="date" name="due_date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Amount*</label>
+                    <input type="number" name="amount" step="0.01" class="form-control" placeholder="0.00" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeBillModal()">Back</button>
+                <button type="submit" class="btn-primary">Add Bill</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openBillModal() {
+        document.getElementById('billModal').style.display = 'block';
+    }
+    function closeBillModal() {
+        document.getElementById('billModal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('billModal')) {
+            closeBillModal();
+        }
+    }
+</script>
+{% endblock %}

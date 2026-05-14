@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Back - Vetri PinTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="left-section">
+                <h1 class="auth-title">Welcome Back 👋</h1>
+                <p class="auth-subtitle">Login to your account</p>
+
+                <form class="auth-form" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Email Id*</label>
+                        <input type="email" name="email" placeholder="Enter Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="password-input">
+                            <input type="password" name="password" placeholder="Enter Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn-signup">Login</button>
+                </form>
+
+                <p class="login-link">
+                    Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
+                </p>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <button class="btn-google">
+                    <img src="https://img.icons8.com/color/48/google-logo.png" alt="Google">
+                    Continue With Google
+                </button>
+
+                <p class="terms-text">
+                    By logging in, you agree to our Terms of Service and Privacy Policy.
+                </p>
+            </div>
+
+            <div class="right-section">
+                <div class="logo-top">
+                    <img src="/static/images/vetrilogo.png" alt="Vetri PinTrack logo">
+                    
+                </div>
+                <div class="illustration">
+                    <img src="/static/images/login.png" alt="Finance Illustration">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

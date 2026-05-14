@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Set Up Your Finances - Vetri PinTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/onboarding.css">
+</head>
+<body>
+    <div class="onboarding-container">
+        <header class="onboarding-header">
+            <div class="logo">
+                <img src="/static/images/vetrilogo.png" alt="Vetri PinTrack logo">
+            </div>
+        </header>
+
+        <main class="onboarding-main">
+            <h1 class="onboarding-title">Let's Set Up Your Finances ⭐</h1>
+            <p class="onboarding-subtitle">Let's Set Up Your Finances</p>
+
+            <div class="onboarding-card">
+                <h2 class="card-title">Add your first account</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Type*</label>
+                            <select name="account_type" required>
+                                <option value="bank">Bank</option>
+                                <option value="upi">UPI</option>
+                                <option value="wallet">Wallet</option>
+                                <option value="credit_card">Credit Card</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Account Holder Name</label>
+                            <input type="text" name="account_holder" placeholder="Enter account holder name">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Account Type</label>
+                            <input type="text" name="account_subtype" placeholder="e.g., savings account">
+                        </div>
+                        <div class="form-group">
+                            <label>Account Number/UPI ID*</label>
+                            <input type="text" name="account_number" placeholder="Enter AC number" required>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Provider*</label>
+                            <select name="provider" required>
+                                <option value="sbi">SBI</option>
+                                <option value="hdfc">HDFC</option>
+                                <option value="icici">ICICI</option>
+                                <option value="axis">Axis</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Initial Balance</label>
+                            <input type="number" name="initial_balance" placeholder="₹ 0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-back" onclick="window.location.href='{% url 'onboarding_step3' %}'">Back</button>
+                        <button type="button" class="btn-skip">Skip</button>
+                        <button type="submit" class="btn-continue">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer class="onboarding-footer">
+            <p class="copyright">&copy; 2026 Vetri PinTrack. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="#">Help Center</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

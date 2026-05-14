@@ -1,0 +1,261 @@
+.accounts-container {
+    padding: 20px 0;
+}
+
+.accounts-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    padding: 15px;
+    border-radius: 18px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-total { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
+.card-bank { background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%); }
+.card-upi { background: linear-gradient(135deg, #6C4CF1 0%, #4F46E5 100%); }
+.card-credit { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); }
+
+.card-info h3 {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    opacity: 0.9;
+}
+
+.card-info p {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.card-info span {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.card-icon {
+    width: 35px;
+    height: 35px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+/* Account Sections */
+.account-section {
+    margin-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2d3436;
+}
+
+.section-title i {
+    font-size: 18px;
+}
+
+.color-bank { color: #F43F5E; }
+.color-credit { color: #D97706; }
+.color-upi { color: #6C4CF1; }
+
+.add-account-btn {
+    background: #6C4CF1;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-account-btn:hover {
+    background: #5b3edb;
+    transform: translateY(-2px);
+}
+
+.account-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.account-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.provider-logo {
+    width: 60px;
+    height: 40px;
+    object-fit: contain;
+    background: #f8fafc;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.account-info h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #6C4CF1;
+    margin-bottom: 2px;
+}
+
+.account-info p {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 2px;
+}
+
+.account-info .sub-text {
+    font-size: 12px;
+    color: #718096;
+}
+
+.account-info .balance {
+    font-size: 15px;
+    font-weight: 700;
+    color: #6C4CF1;
+    margin-top: 5px;
+}
+
+.account-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    background: #f8fafc;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background: #edf2f7;
+    color: #2d3436;
+}
+
+.color-edit:hover { color: #6C4CF1; }
+.color-delete:hover { color: #F43F5E; }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 600px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3436;
+    margin-bottom: 6px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    background: #f8fafc;
+    font-size: 14px;
+}
+
+.modal-footer {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.btn-cancel {
+    padding: 10px 30px;
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    background: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-save {
+    padding: 10px 30px;
+    background: #6C4CF1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}

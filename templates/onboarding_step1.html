@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Set Up Your Finances - Vetri PinTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/onboarding.css">
+</head>
+<body>
+    <div class="onboarding-container">
+        <header class="onboarding-header">
+            <div class="logo">
+                <img src="/static/images/vetrilogo.png" alt="Vetri PinTrack logo">
+            </div>
+        </header>
+
+        <main class="onboarding-main">
+            <h1 class="onboarding-title">Let's Set Up Your Finances ⭐</h1>
+            <p class="onboarding-subtitle">Let's Set Up Your Finances</p>
+
+            <div class="onboarding-card">
+                <h2 class="card-title">What is your main income source?</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="income-options">
+                        <div class="income-option" onclick="selectOption(this, 'Salary')">
+                            <input type="radio" name="income_source" value="Salary" id="salary" style="display: none;">
+                            Salary
+                        </div>
+                        <div class="income-option" onclick="selectOption(this, 'Business')">
+                            <input type="radio" name="income_source" value="Business" id="business" style="display: none;">
+                            Business
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-back">Back</button>
+                        <button type="submit" class="btn-continue">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer class="onboarding-footer">
+            <p class="copyright">&copy; 2026 Vetri PinTrack. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="#">Help Center</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function selectOption(element, value) {
+            document.querySelectorAll('.income-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.querySelector(`input[value="${value}"]`).checked = true;
+        }
+    </script>
+</body>
+</html>

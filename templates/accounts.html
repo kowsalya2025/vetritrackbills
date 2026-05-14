@@ -1,0 +1,286 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
+{% block page_title %}Accounts{% endblock %}
+{% block page_subtitle %}Manage your bank, wallet, and payment methods{% endblock %}
+
+{% block content %}
+<div class="accounts-container">
+    <!-- Summary Cards -->
+    <div class="accounts-summary-grid">
+        <div class="summary-card card-total">
+            <div class="card-info">
+                <h3>Total Balance</h3>
+                <p>₹ {{ total_balance|floatformat:2 }}</p>
+                <span>All Accounts</span>
+            </div>
+            <div class="card-icon"><i class="fas fa-wallet"></i></div>
+        </div>
+        <div class="summary-card card-bank">
+            <div class="card-info">
+                <h3>Bank Accounts</h3>
+                <p>₹ {{ bank_balance|floatformat:2 }}</p>
+                <span>{{ bank_count }} Account{{ bank_count|pluralize }}</span>
+            </div>
+            <div class="card-icon"><i class="fas fa-university"></i></div>
+        </div>
+        <div class="summary-card card-upi">
+            <div class="card-info">
+                <h3>UPI Balance</h3>
+                <p>₹ {{ upi_balance|floatformat:2 }}</p>
+                <span>{{ upi_count }} UPI ID{{ upi_count|pluralize }}</span>
+            </div>
+            <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
+        </div>
+        <div class="summary-card card-credit">
+            <div class="card-info">
+                <h3>Credit Card</h3>
+                <p>₹ {{ credit_balance|floatformat:2 }}</p>
+                <span>{{ credit_count }} Card{{ credit_count|pluralize }}</span>
+            </div>
+            <div class="card-icon"><i class="fas fa-credit-card"></i></div>
+        </div>
+    </div>
+
+    <!-- Bank Accounts Section -->
+    <div class="account-section">
+        <div class="section-header">
+            <div class="section-title">
+                <i class="fas fa-university color-bank"></i>
+                <span>Bank Accounts</span>
+            </div>
+            <button class="add-account-btn" onclick="openAddModal('bank')">Add New Account</button>
+        </div>
+        <div class="account-list">
+            {% for acc in bank_accounts %}
+            <div class="account-card">
+                <div class="account-left">
+                    <img src="{% static 'images/indian-overseas-bank-logo-png_seeklogo-423270.png' %}" alt="Bank" class="provider-logo" onerror="this.src='{% static 'images/Bank.png' %}'">
+                    <div class="account-info">
+                        <h4>{{ acc.provider }}</h4>
+                        <p>{{ acc.account_type|default:"Saving Account" }}</p>
+                        <div class="sub-text">xxxxxxxx{{ acc.account_number|slice:"-4:" }}</div>
+                        <div class="balance">₹ {{ acc.initial_balance|floatformat:2 }}</div>
+                    </div>
+                </div>
+                <div class="account-actions">
+                    <button class="action-btn color-edit" onclick="openEditModal('{{ acc.id }}', 'bank', '{{ acc.provider }}', '{{ acc.account_type }}', '{{ acc.account_number }}', '{{ acc.initial_balance }}', '{{ acc.account_holder_name }}')"><i class="fas fa-pencil-alt"></i></button>
+                    <form method="POST" action="{% url 'delete_account' acc.id %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this account?');">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn color-delete"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Credit Card Section -->
+    <div class="account-section">
+        <div class="section-header">
+            <div class="section-title">
+                <i class="fas fa-credit-card color-credit"></i>
+                <span>Credit Card</span>
+            </div>
+        </div>
+        <div class="account-list">
+            {% for acc in credit_cards %}
+            <div class="account-card">
+                <div class="account-left">
+                    <img src="{% static 'images/card.png' %}" alt="Card" class="provider-logo">
+                    <div class="account-info">
+                        <h4>{{ acc.provider }}</h4>
+                        <p>{{ acc.account_type|default:"Savings Account" }}</p>
+                        <div class="sub-text">xxxxxxxx{{ acc.account_number|slice:"-4:" }}</div>
+                        <div class="balance">₹ {{ acc.initial_balance|floatformat:2 }}</div>
+                    </div>
+                </div>
+                <div class="account-actions">
+                    <button class="action-btn color-edit" onclick="openEditModal('{{ acc.id }}', 'credit_card', '{{ acc.provider }}', '{{ acc.account_type }}', '{{ acc.account_number }}', '{{ acc.initial_balance }}', '{{ acc.account_holder_name }}')"><i class="fas fa-pencil-alt"></i></button>
+                    <form method="POST" action="{% url 'delete_account' acc.id %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this account?');">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn color-delete"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- UPI Section -->
+    <div class="account-section">
+        <div class="section-header">
+            <div class="section-title">
+                <i class="fas fa-mobile-alt color-upi"></i>
+                <span>UPI</span>
+            </div>
+        </div>
+        <div class="account-list">
+            {% for acc in upi_accounts %}
+            <div class="account-card">
+                <div class="account-left">
+                    <img src="{% static 'images/UPI.png' %}" alt="UPI" class="provider-logo">
+                    <div class="account-info">
+                        <h4>{{ acc.provider }}</h4>
+                        <p>{{ acc.account_type|default:"Savings Account" }}</p>
+                        <div class="sub-text">UPI ID: {{ acc.account_number }}</div>
+                        <div class="balance">₹ {{ acc.initial_balance|floatformat:2 }}</div>
+                    </div>
+                </div>
+                <div class="account-actions">
+                    <button class="action-btn color-edit" onclick="openEditModal('{{ acc.id }}', 'upi', '{{ acc.provider }}', '{{ acc.account_type }}', '{{ acc.account_number }}', '{{ acc.initial_balance }}', '{{ acc.account_holder_name }}')"><i class="fas fa-pencil-alt"></i></button>
+                    <form method="POST" action="{% url 'delete_account' acc.id %}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this account?');">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn color-delete"><i class="fas fa-trash-alt"></i></button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Add Account Modal -->
+<div id="addAccountModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New Account</h2>
+            <span style="cursor: pointer; font-size: 24px; color: #a0aec0;" onclick="closeAddModal()">&times;</span>
+        </div>
+        <form method="POST" action="{% url 'add_account' %}">
+            {% csrf_token %}
+            <div class="modal-grid">
+                <div class="form-group">
+                    <label>Type*</label>
+                    <select name="type" id="add_type" class="form-control" required>
+                        <option value="bank">Bank</option>
+                        <option value="upi">UPI</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="wallet">Wallet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Account Holder Name</label>
+                    <input type="text" name="account_holder_name" class="form-control" placeholder="Enter account holder name">
+                </div>
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <input type="text" name="account_type" class="form-control" placeholder="e.g., savings account">
+                </div>
+                <div class="form-group">
+                    <label>Account Number/UPI ID*</label>
+                    <input type="text" name="account_number" class="form-control" placeholder="Enter AC number" required>
+                </div>
+                <div class="form-group">
+                    <label>Provider*</label>
+                    <select name="provider" class="form-control" required>
+                        <option value="SBI">SBI</option>
+                        <option value="IOB">IOB</option>
+                        <option value="HDFC">HDFC</option>
+                        <option value="ICICI">ICICI</option>
+                        <option value="Phonepe">Phonepe</option>
+                        <option value="Paytm">Paytm</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Initial Balance</label>
+                    <input type="number" name="initial_balance" class="form-control" placeholder="₹ 0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+                <button type="submit" class="btn-save">Add Account</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Account Modal -->
+<div id="editAccountModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Account</h2>
+            <span style="cursor: pointer; font-size: 24px; color: #a0aec0;" onclick="closeEditModal()">&times;</span>
+        </div>
+        <form id="editAccountForm" method="POST">
+            {% csrf_token %}
+            <div class="modal-grid">
+                <div class="form-group">
+                    <label>Type*</label>
+                    <select name="type" id="edit_type" class="form-control" required>
+                        <option value="bank">Bank</option>
+                        <option value="upi">UPI</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="wallet">Wallet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Account Holder Name</label>
+                    <input type="text" name="account_holder_name" id="edit_holder" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Account Type</label>
+                    <input type="text" name="account_type" id="edit_account_type" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Account Number/UPI ID*</label>
+                    <input type="text" name="account_number" id="edit_number" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Provider*</label>
+                    <select name="provider" id="edit_provider" class="form-control" required>
+                        <option value="SBI">SBI</option>
+                        <option value="IOB">IOB</option>
+                        <option value="HDFC">HDFC</option>
+                        <option value="ICICI">ICICI</option>
+                        <option value="Phonepe">Phonepe</option>
+                        <option value="Paytm">Paytm</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Balance</label>
+                    <input type="number" name="initial_balance" id="edit_balance" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="btn-save">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openAddModal(type) {
+        if(type) document.getElementById('add_type').value = type;
+        document.getElementById('addAccountModal').style.display = 'block';
+    }
+    function closeAddModal() {
+        document.getElementById('addAccountModal').style.display = 'none';
+    }
+    function openEditModal(id, type, provider, accountType, number, balance, holder) {
+        const form = document.getElementById('editAccountForm');
+        form.action = `/accounts/${id}/edit/`;
+        document.getElementById('edit_type').value = type;
+        document.getElementById('edit_provider').value = provider;
+        document.getElementById('edit_account_type').value = accountType;
+        document.getElementById('edit_number').value = number;
+        document.getElementById('edit_balance').value = balance;
+        document.getElementById('edit_holder').value = holder;
+        document.getElementById('editAccountModal').style.display = 'block';
+    }
+    function closeEditModal() {
+        document.getElementById('editAccountModal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('addAccountModal')) closeAddModal();
+        if (event.target == document.getElementById('editAccountModal')) closeEditModal();
+    }
+</script>
+{% endblock %}

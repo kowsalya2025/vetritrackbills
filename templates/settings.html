@@ -1,0 +1,249 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block page_title %}Settings{% endblock %}
+{% block page_subtitle %}Manage your account and preferences{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-grid">
+        <!-- Profile Settings -->
+        <div class="settings-card profile-settings">
+            <h2>Profile Settings</h2>
+            <form method="POST" action="{% url 'settings' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="profile_settings">
+                
+                <div class="profile-settings-header">
+                    <div class="profile-pic-container">
+                        {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" alt="Profile" class="profile-pic">
+                        {% elif profile.user.first_name and profile.user.last_name %}
+                            <img src="https://ui-avatars.com/api/?name={{ profile.user.first_name }}+{{ profile.user.last_name }}&background=random&color=fff" alt="Profile" class="profile-pic">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ account_holder }}&background=random&color=fff" alt="Profile" class="profile-pic">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <input type="file" name="profile_picture" id="profile_picture_input" style="display: none;" onchange="this.form.submit()">
+                        <button type="button" class="update-pic-btn" onclick="document.getElementById('profile_picture_input').click()">
+                            <i class="fas fa-upload"></i> Update
+                        </button>
+                        <p style="margin-top: 8px; font-size: 12px; color: #a0aec0;">Max file size: Below 500kb</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" name="name" class="form-control" value="{{ request.user.first_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Email Id</label>
+                    <input type="email" name="email" class="form-control" value="{{ request.user.email }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" name="phone_number" class="form-control" value="{{ profile.phone_number|default:'' }}" placeholder="1234567890">
+                </div>
+
+                <button type="submit" class="save-btn">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="right-column">
+            <!-- Security -->
+            <div class="settings-card security-settings">
+                <h2>Security</h2>
+                <form method="POST" action="{% url 'settings' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="security_settings">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" name="new_password" class="form-control" placeholder="Enter New Password">
+                            <i class="fas fa-eye-slash password-toggle"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm New Password">
+                            <i class="fas fa-eye-slash password-toggle"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="change-pwd-btn">Change Password</button>
+                </form>
+            </div>
+
+            <!-- Two-Factor Authentication -->
+            <div class="settings-card tfa-settings">
+                <h2>Two-Factor Authentication</h2>
+                <form method="POST" action="{% url 'settings' %}" id="tfa-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="toggle_settings">
+                    <div class="toggle-group">
+                        <span class="toggle-label">{% if profile.two_factor_auth %}On{% else %}Off{% endif %}</span>
+                        <label class="switch">
+                            <input type="checkbox" name="two_factor_auth" {% if profile.two_factor_auth %}checked{% endif %} onchange="this.form.submit()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <!-- Preserve other toggles when submitting this one -->
+                    {% if profile.bill_reminders %}<input type="hidden" name="bill_reminders" value="on">{% endif %}
+                    {% if profile.budget_alerts %}<input type="hidden" name="budget_alerts" value="on">{% endif %}
+                    {% if profile.transaction_alerts %}<input type="hidden" name="transaction_alerts" value="on">{% endif %}
+                    {% if profile.upi_connected %}<input type="hidden" name="upi_connected" value="on">{% endif %}
+                    {% if profile.bank_account_connected %}<input type="hidden" name="bank_account_connected" value="on">{% endif %}
+                </form>
+            </div>
+
+            <!-- Currency -->
+            <div class="settings-card currency-settings">
+                <h2>Currency</h2>
+                <form method="POST" action="{% url 'settings' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="currency_settings">
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select name="currency" class="form-control" onchange="this.form.submit()">
+                            <option value="INR" {% if profile.currency == 'INR' %}selected{% endif %}>INR ₹</option>
+                            <option value="USD" {% if profile.currency == 'USD' %}selected{% endif %}>USD $</option>
+                            <option value="EUR" {% if profile.currency == 'EUR' %}selected{% endif %}>EUR €</option>
+                            <option value="GBP" {% if profile.currency == 'GBP' %}selected{% endif %}>GBP £</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- General Settings -->
+        <div class="settings-card general-settings">
+            <h2>General Settings</h2>
+            <form method="POST" action="{% url 'settings' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="toggle_settings">
+                
+                <div class="toggle-group">
+                    <span class="toggle-label">Bill Reminders</span>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="toggle-status">{% if profile.bill_reminders %}On{% else %}Off{% endif %}</span>
+                        <label class="switch">
+                            <input type="checkbox" name="bill_reminders" {% if profile.bill_reminders %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span class="toggle-label">Budget Alerts</span>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="toggle-status">{% if profile.budget_alerts %}On{% else %}Off{% endif %}</span>
+                        <label class="switch">
+                            <input type="checkbox" name="budget_alerts" {% if profile.budget_alerts %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span class="toggle-label">Transaction Alerts</span>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="toggle-status">{% if profile.transaction_alerts %}On{% else %}Off{% endif %}</span>
+                        <label class="switch">
+                            <input type="checkbox" name="transaction_alerts" {% if profile.transaction_alerts %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span class="toggle-label">UPI Connected</span>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="toggle-status">{% if profile.upi_connected %}On{% else %}Off{% endif %}</span>
+                        <label class="switch">
+                            <input type="checkbox" name="upi_connected" {% if profile.upi_connected %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <span class="toggle-label">Bank Account Connected</span>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="toggle-status">{% if profile.bank_account_connected %}On{% else %}Off{% endif %}</span>
+                        <label class="switch">
+                            <input type="checkbox" name="bank_account_connected" {% if profile.bank_account_connected %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Preserve 2FA toggle when submitting this form -->
+                {% if profile.two_factor_auth %}<input type="hidden" name="two_factor_auth" value="on">{% endif %}
+
+                <button type="submit" class="save-btn" style="margin-top: 20px;">Save General Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="bottom-grid">
+        <!-- Data Management -->
+        <div class="settings-card data-management">
+            <h2>Data Management</h2>
+            <p>Export your financial data</p>
+            <a href="{% url 'export_transactions' %}" class="export-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+                <i class="fas fa-file-export"></i> Export Data
+            </a>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-card danger-zone">
+            <h2>Danger Zone</h2>
+            <p>Permanently delete all your financial data</p>
+            <form method="POST" action="{% url 'settings' %}" onsubmit="return confirm('Are you sure you want to clear all data? This action cannot be undone.');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="clear_data">
+                <button type="submit" class="clear-btn">Clear All Data</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Toggle password visibility
+    document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+    });
+
+    // Handle toggle status text updates
+    document.querySelectorAll('.switch input').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const statusSpan = this.closest('.toggle-group').querySelector('.toggle-status');
+            if (statusSpan) {
+                statusSpan.textContent = this.checked ? 'On' : 'Off';
+            }
+        });
+    });
+</script>
+{% endblock %}

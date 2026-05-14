@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Set Up Your Finances - Vetri PinTrack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/onboarding.css">
+</head>
+<body>
+    <div class="onboarding-container">
+        <header class="onboarding-header">
+            <div class="logo">
+                <img src="/static/images/vetrilogo.png" alt="Vetri PinTrack logo">
+            </div>
+        </header>
+
+        <main class="onboarding-main">
+            <h1 class="onboarding-title">Let's Set Up Your Finances</h1>
+            <p class="onboarding-subtitle">Let's Set Up Your Finances</p>
+
+            <div class="onboarding-card">
+                <h2 class="card-title">Create your first budget</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Category*</label>
+                            <select name="budget_category" required>
+                                <option value="food">Food & Dining</option>
+                                <option value="transport">Transportation</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="entertainment">Entertainment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Budget Amount</label>
+                            <input type="number" name="budget_amount" placeholder="Rs. 0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" name="start_date">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" name="end_date">
+                        </div>
+                    </div>
+                    <div class="form-group-full">
+                        <div class="form-group">
+                            <label>Alert me when I reach</label>
+                            <select name="alert_threshold">
+                                <option value="">Select</option>
+                                <option value="50">50%</option>
+                                <option value="75">75%</option>
+                                <option value="90">90%</option>
+                                <option value="100">100%</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn-back" onclick="window.location.href='{% url 'onboarding_step4' %}'">Back</button>
+                        <button type="submit" name="skip" value="1" class="btn-skip">Skip</button>
+                        <button type="submit" class="btn-continue">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer class="onboarding-footer">
+            <p class="copyright">&copy; 2026 Vetri PinTrack. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+                <a href="#">Help Center</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

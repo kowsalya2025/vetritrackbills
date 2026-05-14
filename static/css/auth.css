@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6C4CF1 0%, #F43F5E 100%);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2vh;
+}
+
+.auth-container {
+    width: 80vw;
+}
+
+.auth-card {
+    background-color: white;
+    border-radius: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    max-height: 92vh;
+}
+
+.left-section {
+    padding: 4vh 3vw;
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d3436;
+    margin-bottom: 6px;
+}
+
+.auth-subtitle {
+    font-size: 14px;
+    color: #717171;
+    margin-bottom: 2vh;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.form-group input {
+    padding: 1.4vh 15px;
+    border: 1px solid #D3D3D3;
+    border-radius: 7px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #F3F4F6;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #6C4CF1;
+    background-color: white;
+}
+
+.password-input {
+    position: relative;
+}
+
+.password-input input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #717171;
+    cursor: pointer;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: 3px;
+}
+
+.forgot-password a {
+    color: #F43F5E;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-signup {
+    background: linear-gradient(135deg, #6C4CF1 0%, #9747FF 100%);
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-signup:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 14px;
+    color: #2d3436;
+}
+
+.login-link a {
+    color: #F43F5E;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 2vh 0;
+    gap: 12px;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: #D3D3D3;
+}
+
+.divider span {
+    color: #717171;
+    font-size: 13px;
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    background-color: white;
+    border: 1px solid #D3D3D3;
+    padding: 10px 50px;
+    border-radius: 7px;
+    margin: auto;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2d3436;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-google:hover {
+    background-color: #F3F4F6;
+}
+
+.btn-google img {
+    width: 22px;
+    height: 22px;
+}
+
+.terms-text {
+    text-align: center;
+    margin-top: 2vh;
+    font-size: 12px;
+    color: #717171;
+}
+
+.right-section {
+    padding: 3vh 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    gap: 8px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2d3436;
+}
+
+.logo-top img {
+     width: 200px;
+    object-fit: contain;
+}
+
+.illustration {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.illustration img {
+    max-width: 100%;
+    /* max-height: 54vh; */
+    height: auto;
+    border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+    .auth-container {
+        width: 88vw;
+    }
+
+    .auth-card {
+        grid-template-columns: 1fr;
+        max-height: 94vh;
+    }
+
+    .left-section {
+        padding: 4vh 5vw;
+    }
+    
+    .right-section {
+        display: none;
+    }
+}
