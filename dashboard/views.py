@@ -262,7 +262,9 @@ def dashboard(request):
 
     transactions = Transaction.objects.filter(user=request.user).select_related('category', 'account').order_by('-date')
     transaction_income = transactions.filter(category__type='income').aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
-    total_income = profile.monthly_income or transaction_income or Decimal('0')
+    total_income = transaction_income
+    if profile.monthly_income:
+        total_income += profile.monthly_income
     total_expense = transactions.filter(category__type='expense').aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
     balance = account_balance + total_income - total_expense
     savings_rate = (balance / total_income * 100) if total_income else Decimal('0')
@@ -650,7 +652,7 @@ def bills_view(request):
     
     profile = get_or_create_profile(request.user)
     account_holder = request.user.first_name or request.user.username
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('-created_at')
     if accounts.exists():
         account_holder = accounts.first().account_holder_name or account_holder
         
@@ -679,7 +681,7 @@ def reports_view(request):
     
     profile = get_or_create_profile(request.user)
     account_holder = request.user.first_name or request.user.username
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('-created_at')
     if accounts.exists():
         account_holder = accounts.first().account_holder_name or account_holder
 
@@ -742,7 +744,7 @@ def transactions_view(request):
     
     profile = get_or_create_profile(request.user)
     account_holder = request.user.first_name or request.user.username
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('-created_at')
     if accounts.exists():
         account_holder = accounts.first().account_holder_name or account_holder
 
@@ -770,6 +772,8 @@ def transactions_view(request):
 
     # Summary calculations
     total_income = transactions_query.filter(category__type='income').aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
+    if profile.monthly_income:
+        total_income += profile.monthly_income
     total_expense = transactions_query.filter(category__type='expense').aggregate(Sum('amount'))['amount__sum'] or Decimal('0')
     net_balance = total_income - total_expense
 
@@ -797,7 +801,7 @@ def budgets_view(request):
     
     profile = get_or_create_profile(request.user)
     account_holder = request.user.first_name or request.user.username
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('-created_at')
     if accounts.exists():
         account_holder = accounts.first().account_holder_name or account_holder
 
@@ -923,7 +927,7 @@ def settings_view(request):
     
     profile = get_or_create_profile(request.user)
     account_holder = request.user.first_name or request.user.username
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('-created_at')
     if accounts.exists():
         account_holder = accounts.first().account_holder_name or account_holder
 
@@ -991,7 +995,7 @@ def accounts_view(request):
     
     profile = get_or_create_profile(request.user)
     account_holder = request.user.first_name or request.user.username
-    accounts = Account.objects.filter(user=request.user)
+    accounts = Account.objects.filter(user=request.user).order_by('-created_at')
     if accounts.exists():
         account_holder = accounts.first().account_holder_name or account_holder
 

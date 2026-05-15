@@ -47,7 +47,7 @@
                 </div>
 
                 <button class="btn-google">
-                    <img src="/static/images/google-logo.png" alt="Google">
+                    <img src="https://img.icons8.com/color/48/google-logo.png" alt="Google">
                     Continue With Google
                 </button>
 
@@ -66,5 +66,55 @@
             </div>
         </div>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle password visibility
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordInput = document.querySelector('input[name="password"]');
+        
+        if (togglePassword && passwordInput) {
+            // Ensure cursor pointer on hover
+            togglePassword.style.cursor = 'pointer';
+            
+            togglePassword.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    this.classList.remove('fa-eye-slash');
+                    this.classList.add('fa-eye');
+                } else {
+                    passwordInput.type = 'password';
+                    this.classList.remove('fa-eye');
+                    this.classList.add('fa-eye-slash');
+                }
+            });
+        }
+
+        // Form Validation
+        const form = document.querySelector('.auth-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const name = document.querySelector('input[name="name"]').value;
+                const email = document.querySelector('input[name="email"]').value;
+                const password = document.querySelector('input[name="password"]').value;
+                
+                if (!name.trim()) {
+                    e.preventDefault();
+                    alert('Please enter your name.');
+                    return;
+                }
+                if (!email || !email.includes('@')) {
+                    e.preventDefault();
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+                if (!password || password.length < 6) {
+                    e.preventDefault();
+                    alert('Password must be at least 6 characters long.');
+                    return;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
