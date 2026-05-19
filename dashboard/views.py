@@ -553,6 +553,47 @@ def payment_status(request, merchant_order_id):
         merchant_order_id=merchant_order_id,
         user=request.user,
     )
+
+    if order.status == PaymentOrder.STATUS_PENDING and settings.PHONEPE_ENABLED:
+        merchant_id = settings.PHONEPE_MERCHANT_ID
+        endpoint = f"/pg/v1/status/{merchant_id}/{merchant_order_id}"
+        main_string = endpoint + settings.PHONEPE_SALT_KEY
+        sha256_hash = hashlib.sha256(main_string.encode()).hexdigest()
+        checksum = sha256_hash + "###" + settings.PHONEPE_SALT_INDEX
+
+        headers = {
+            "Content-Type": "application/json",
+            "X-VERIFY": checksum,
+            "X-MERCHANT-ID": merchant_id,
+            "accept": "application/json"
+        }
+
+        status_url = f"{settings.PHONEPE_STATUS_URL}/{merchant_id}/{merchant_order_id}"
+        
+        try:
+            response = requests.get(status_url, headers=headers)
+            res_data = response.json()
+            
+            if res_data.get('success'):
+                code = res_data.get('code')
+                if code == 'PAYMENT_SUCCESS':
+                    order.status = PaymentOrder.STATUS_SUCCESS
+                    order.bill.status = Bill.STATUS_PAID
+                    order.bill.paid_at = timezone.now()
+                    order.bill.save(update_fields=['status', 'paid_at', 'updated_at'])
+                elif code == 'PAYMENT_ERROR':
+                    order.status = PaymentOrder.STATUS_FAILED
+                    order.bill.status = Bill.STATUS_FAILED
+                    order.bill.save(update_fields=['status', 'updated_at'])
+                
+                if 'data' in res_data and 'transactionId' in res_data['data']:
+                    order.provider_order_id = res_data['data']['transactionId']
+                
+                order.save(update_fields=['status', 'provider_order_id', 'updated_at'])
+                PaymentAttempt.objects.create(order=order, status=order.status, response_payload=res_data)
+        except Exception as e:
+            pass
+
     attempts = order.attempts.all()
     return render(request, 'payment_status.html', {'order': order, 'attempts': attempts})
 
