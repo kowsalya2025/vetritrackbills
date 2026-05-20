@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard{% endblock %} - Vetri PinTrack</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/css/new_dashboard.css?v=1.1">
+    <link rel="stylesheet" href="/static/css/new_dashboard.css?v=1.2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {% block extra_head %}{% endblock %}
 </head>
@@ -46,7 +46,58 @@
                     <p class="page-subtitle">{% block page_subtitle %}Welcome back! Here's your financial overview{% endblock %}</p>
                 </div>
                 <div class="top-right">
-                    <div class="notifications-btn"><i class="fas fa-bell"></i></div>
+                    <div class="notifications-wrapper" style="position: relative;">
+                        <div class="notifications-btn" id="notifToggle" style="cursor: pointer; position: relative;">
+                            <i class="fas fa-bell"></i>
+                            {% if unread_notifications_count > 0 %}
+                            <span class="badge" style="position: absolute; top: -5px; right: -5px; background: #EF4444; color: white; border-radius: 50%; padding: 2px 5px; font-size: 10px; font-weight: bold;">
+                                {{ unread_notifications_count }}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div id="notifDropdown" class="notif-dropdown" style="display: none; position: absolute; top: 100%; right: -10px; width: 320px; background: white; border: 1px solid #E5E7EB; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); z-index: 50; margin-top: 15px; overflow: hidden;">
+                            <div style="padding: 12px 16px; border-bottom: 1px solid #E5E7EB; font-weight: 600; color: #111827; display: flex; justify-content: space-between; align-items: center;">
+                                Notifications
+                                {% if unread_notifications_count > 0 %}
+                                <span style="background: #E0E7FF; color: #4338CA; font-size: 11px; padding: 2px 8px; border-radius: 12px;">{{ unread_notifications_count }} new</span>
+                                {% endif %}
+                            </div>
+                            <div style="max-height: 320px; overflow-y: auto;">
+                                {% for notif in recent_notifications %}
+                                <div style="padding: 14px 16px; border-bottom: 1px solid #F3F4F6; {% if notif.status == 'pending' %}background: #F8FAFC; border-left: 3px solid #3B82F6;{% endif %}">
+                                    <div style="font-weight: 600; color: #1F2937; font-size: 14px; margin-bottom: 4px;">{{ notif.subject }}</div>
+                                    <div style="color: #4B5563; font-size: 13px; line-height: 1.4;">{{ notif.message }}</div>
+                                    <div style="color: #9CA3AF; font-size: 11px; margin-top: 8px; font-weight: 500;"><i class="far fa-clock" style="margin-right: 4px;"></i>{{ notif.created_at|timesince }} ago</div>
+                                </div>
+                                {% empty %}
+                                <div style="padding: 24px 16px; text-align: center; color: #6B7280; font-size: 14px;">
+                                    <i class="far fa-bell-slash" style="font-size: 24px; color: #D1D5DB; margin-bottom: 12px; display: block;"></i>
+                                    You're all caught up!
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const toggle = document.getElementById('notifToggle');
+                            const dropdown = document.getElementById('notifDropdown');
+                            
+                            if (toggle && dropdown) {
+                                toggle.addEventListener('click', function(e) {
+                                    e.stopPropagation();
+                                    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+                                });
+                                
+                                document.addEventListener('click', function(e) {
+                                    if (!dropdown.contains(e.target) && !toggle.contains(e.target)) {
+                                        dropdown.style.display = 'none';
+                                    }
+                                });
+                            }
+                        });
+                    </script>
                     <div class="user-profile">
                         <div class="user-avatar">
                             {% if profile.profile_picture %}

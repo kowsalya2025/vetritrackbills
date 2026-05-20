@@ -318,6 +318,8 @@ def dashboard(request):
         'expense_data': json.dumps(expense_data),
         'expense_categories': json.dumps(expense_categories),
         'expense_categories_dict': expense_categories,
+        'expense_categories_labels': json.dumps(list(expense_categories.keys())),
+        'expense_categories_data': json.dumps(list(expense_categories.values())),
         'bill_form': BillForm(),
         'account_form': AccountForm(),
         'transaction_form': TransactionForm(user=request.user, initial={'date': timezone.localdate()}),

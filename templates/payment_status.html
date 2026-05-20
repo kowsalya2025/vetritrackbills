@@ -1,26 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Status - Vetri PinTrack</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/css/new_dashboard.css">
-    <style>
-        html, body {
-            overflow-y: auto !important;
-            height: auto !important;
-            min-height: 100vh;
-        }
-        .payment-status-page {
-            padding: 40px 20px;
-            align-items: flex-start; /* Prevent top-cutoff when centered and overflowing */
-        }
-    </style>
-</head>
-<body>
-    <main class="payment-status-page">
-        <section class="payment-status-card">
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Payment Status - Vetri PinTrack{% endblock %}
+
+{% block content %}
+    <main class="payment-status-page" style="min-height: auto; padding: 20px;">
+        <section class="payment-status-card" style="margin: 0 auto;">
             <div class="payment-status-icon {{ order.status }}">
                 {% if order.status == 'success' %}
                 <i class="fas fa-check"></i>
@@ -109,5 +94,4 @@
             </div>
         </section>
     </main>
-</body>
-</html>
+{% endblock %}

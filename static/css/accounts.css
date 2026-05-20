@@ -2,56 +2,6 @@
     padding: 20px 0;
 }
 
-.accounts-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.summary-card {
-    padding: 15px;
-    border-radius: 18px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.card-total { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
-.card-bank { background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%); }
-.card-upi { background: linear-gradient(135deg, #6C4CF1 0%, #4F46E5 100%); }
-.card-credit { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); }
-
-.card-info h3 {
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 5px;
-    opacity: 0.9;
-}
-
-.card-info p {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.card-info span {
-    font-size: 11px;
-    opacity: 0.8;
-}
-
-.card-icon {
-    width: 35px;
-    height: 35px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
 /* Account Sections */
 .account-section {
     margin-bottom: 30px;

@@ -14,37 +14,37 @@
 <div class="accounts-container">
     <!-- Summary Cards -->
     <div class="accounts-summary-grid">
-        <div class="summary-card card-total">
-            <div class="card-info">
-                <h3>Total Balance</h3>
-                <p>₹ {{ total_balance|floatformat:2 }}</p>
-                <span>All Accounts</span>
+        <div class="summary-card card-balance">
+            <div class="card-header">
+                <div class="card-title">Total Balance</div>
+                <div class="card-icon"><i class="fas fa-wallet"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-wallet"></i></div>
+            <div class="card-amount">₹{{ total_balance|floatformat:2 }}</div>
+            <div class="card-label">All Accounts</div>
         </div>
-        <div class="summary-card card-bank">
-            <div class="card-info">
-                <h3>Bank Accounts</h3>
-                <p>₹ {{ bank_balance|floatformat:2 }}</p>
-                <span>{{ bank_count }} Account{{ bank_count|pluralize }}</span>
+        <div class="summary-card card-income">
+            <div class="card-header">
+                <div class="card-title">Bank Accounts</div>
+                <div class="card-icon"><i class="fas fa-university"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-university"></i></div>
+            <div class="card-amount">₹{{ bank_balance|floatformat:2 }}</div>
+            <div class="card-label">{{ bank_count }} Account{{ bank_count|pluralize }}</div>
         </div>
-        <div class="summary-card card-upi">
-            <div class="card-info">
-                <h3>UPI Balance</h3>
-                <p>₹ {{ upi_balance|floatformat:2 }}</p>
-                <span>{{ upi_count }} UPI ID{{ upi_count|pluralize }}</span>
+        <div class="summary-card card-expense">
+            <div class="card-header">
+                <div class="card-title">UPI Balance</div>
+                <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
+            <div class="card-amount">₹{{ upi_balance|floatformat:2 }}</div>
+            <div class="card-label">{{ upi_count }} UPI ID{{ upi_count|pluralize }}</div>
         </div>
-        <div class="summary-card card-credit">
-            <div class="card-info">
-                <h3>Credit Card</h3>
-                <p>₹ {{ credit_balance|floatformat:2 }}</p>
-                <span>{{ credit_count }} Card{{ credit_count|pluralize }}</span>
+        <div class="summary-card card-savings">
+            <div class="card-header">
+                <div class="card-title">Credit Card</div>
+                <div class="card-icon"><i class="fas fa-credit-card"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-credit-card"></i></div>
+            <div class="card-amount">₹{{ credit_balance|floatformat:2 }}</div>
+            <div class="card-label">{{ credit_count }} Card{{ credit_count|pluralize }}</div>
         </div>
     </div>
 

@@ -5,46 +5,38 @@
 {% block page_subtitle %}Analyze your income and expenses{% endblock %}
 
 {% block content %}
-<section class="bills-summary-grid">
-    <div class="summary-card wave-card wave-green">
+<section class="reports-summary-grid">
+    <div class="summary-card card-income">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Total Income</h3>
-                <p class="card-amount">&#8377;{{ total_income|floatformat:2 }}</p>
-            </div>
+            <div class="card-title">Total Income</div>
             <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
         </div>
-        <p class="card-label">All time income</p>
+        <div class="card-amount">&#8377;{{ total_income|floatformat:2 }}</div>
+        <div class="card-label">All time income</div>
     </div>
-    <div class="summary-card wave-card wave-red">
+    <div class="summary-card card-expense">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Total Expenses</h3>
-                <p class="card-amount">&#8377;{{ total_expense|floatformat:2 }}</p>
-            </div>
+            <div class="card-title">Total Expenses</div>
             <div class="card-icon"><i class="fas fa-receipt"></i></div>
         </div>
-        <p class="card-label">All time expenses</p>
+        <div class="card-amount">&#8377;{{ total_expense|floatformat:2 }}</div>
+        <div class="card-label">All time expenses</div>
     </div>
-    <div class="summary-card wave-card wave-blue">
+    <div class="summary-card card-balance">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Total Balance</h3>
-                <p class="card-amount">&#8377;{{ total_balance|floatformat:2 }}</p>
-            </div>
+            <div class="card-title">Total Balance</div>
             <div class="card-icon"><i class="fas fa-coins"></i></div>
         </div>
-        <p class="card-label">Current balance</p>
+        <div class="card-amount">&#8377;{{ total_balance|floatformat:2 }}</div>
+        <div class="card-label">Current balance</div>
     </div>
-    <div class="summary-card wave-card wave-yellow">
+    <div class="summary-card card-savings">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Savings Rate</h3>
-                <p class="card-amount">{{ savings_rate|floatformat:1 }}%</p>
-            </div>
+            <div class="card-title">Savings Rate</div>
             <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
         </div>
-        <p class="card-label">Income saved</p>
+        <div class="card-amount">{{ savings_rate|floatformat:1 }}%</div>
+        <div class="card-label">Income saved</div>
     </div>
 </section>
 
@@ -76,12 +68,7 @@
             <div class="doughnut-center-icon">
                 <i class="fas fa-chart-pie"></i>
             </div>
-            <!-- Absolute positioned labels to match screenshot -->
-            <div class="doughnut-label" style="top: 10%; right: 10%; color: #F43F5E;">Food & Dining (38%)</div>
-            <div class="doughnut-label" style="top: 45%; left: 5%; color: #F97316;">Shopping (29%)</div>
-            <div class="doughnut-label" style="bottom: 15%; left: 5%; color: #E11D48;">Bills & Utilities (17%)</div>
-            <div class="doughnut-label" style="bottom: 5%; right: 25%; color: #C084FC;">Transportation (10%)</div>
-            <div class="doughnut-label" style="top: 65%; right: 5%; color: #3B82F6;">Entertainment (7%)</div>
+            <!-- Labels will be handled by the chart legend dynamically -->
         </div>
     </div>
     
@@ -284,15 +271,18 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(ctxDoughnut, {
         type: 'doughnut',
         data: {
-            labels: ['Food & Dining', 'Shopping', 'Bills & Utilities', 'Transportation', 'Entertainment'],
+            labels: {{ expense_categories_labels|safe|default:"['Food & Dining', 'Shopping', 'Bills & Utilities', 'Transportation', 'Entertainment']" }},
             datasets: [{
-                data: [38, 29, 17, 10, 7], // using fixed data to match screenshot exactly if dynamic is missing
+                data: {{ expense_categories_data|safe|default:"[38, 29, 17, 10, 7]" }}, 
                 backgroundColor: [
                     '#F43F5E', // Red
                     '#F97316', // Orange
                     '#E11D48', // Darker Red
                     '#C084FC', // Purple
-                    '#3B82F6'  // Blue
+                    '#3B82F6', // Blue
+                    '#10B981', // Green
+                    '#FBBF24', // Yellow
+                    '#14B8A6'  // Teal
                 ],
                 borderWidth: 0,
                 cutout: '75%'
@@ -302,8 +292,16 @@ document.addEventListener("DOMContentLoaded", function() {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    display: false // We show it with custom labels in the screenshot? No, the screenshot has labels floating around, or we can use datalabels plugin. For now just standard doughnut.
+                legend: { 
+                    display: true, 
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 8,
+                        font: {
+                            size: 11
+                        }
+                    }
                 }
             }
         }

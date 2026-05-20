@@ -7,45 +7,37 @@
 {% block content %}
 
 <section class="reports-summary-grid">
-    <div class="summary-card wave-card wave-blue">
+    <div class="summary-card card-balance">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Total Balance</h3>
-                <p class="card-amount">&#8377; {{ balance|floatformat:2 }}</p>
-            </div>
+            <div class="card-title">Total Balance</div>
             <div class="card-icon"><i class="fas fa-coins"></i></div>
         </div>
-        <p class="card-label">Current balance</p>
+        <div class="card-amount">&#8377;{{ balance|floatformat:2 }}</div>
+        <div class="card-label">Current balance</div>
     </div>
-    <div class="summary-card wave-card wave-green">
+    <div class="summary-card card-income">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Total Income</h3>
-                <p class="card-amount">&#8377; {{ total_income|floatformat:2 }}</p>
-            </div>
+            <div class="card-title">Total Income</div>
             <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
         </div>
-        <p class="card-label">All time income</p>
+        <div class="card-amount">&#8377;{{ total_income|floatformat:2 }}</div>
+        <div class="card-label">All time income</div>
     </div>
-    <div class="summary-card wave-card wave-red">
+    <div class="summary-card card-expense">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Total Expenses</h3>
-                <p class="card-amount">&#8377; {{ total_expense|floatformat:2 }}</p>
-            </div>
+            <div class="card-title">Total Expenses</div>
             <div class="card-icon"><i class="fas fa-receipt"></i></div>
         </div>
-        <p class="card-label">All time expenses</p>
+        <div class="card-amount">&#8377;{{ total_expense|floatformat:2 }}</div>
+        <div class="card-label">All time expenses</div>
     </div>
-    <div class="summary-card wave-card wave-yellow">
+    <div class="summary-card card-savings">
         <div class="card-header">
-            <div>
-                <h3 class="card-title">Savings Rate</h3>
-                <p class="card-amount">{{ savings_rate|floatformat:1 }}%</p>
-            </div>
+            <div class="card-title">Savings Rate</div>
             <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
         </div>
-        <p class="card-label">Income saved</p>
+        <div class="card-amount">{{ savings_rate|floatformat:1 }}%</div>
+        <div class="card-label">Income saved</div>
     </div>
 </section>
 
@@ -138,130 +130,37 @@
             <div class="doughnut-center-icon">
                 <i class="fas fa-chart-pie"></i>
             </div>
-            <!-- Absolute positioned labels to match screenshot -->
-            <div class="doughnut-label" style="top: 10%; right: 10%; color: #3B82F6;">Food & Dining (38%)</div>
-            <div class="doughnut-label" style="bottom: 10%; left: 30%; color: #FBBF24;">Shopping (29%)</div>
-            <div class="doughnut-label" style="bottom: 15%; left: 5%; color: #EF4444;">Bills & Utilities (17%)</div>
-            <div class="doughnut-label" style="top: 45%; left: 5%; color: #C084FC;">Transportation (10%)</div>
-            <div class="doughnut-label" style="top: 65%; right: 5%; color: #10B981;">Entertainment (7%)</div>
+            <!-- Labels will be handled by the chart legend dynamically -->
         </div>
     </div>
     
     <div class="chart-card">
         <h3>Recent Activity</h3>
         <div class="recent-activity-list">
-            <!-- Mocked content to perfectly match screenshot -->
-            <div class="activity-row">
-                <div class="activity-row-left">
-                    <div class="activity-icon"><i class="fas fa-file-invoice"></i></div>
-                    <div class="activity-info">
-                        <div class="activity-title">Electricity Bill</div>
-                        <div class="activity-subtitle">Auto</div>
-                    </div>
-                </div>
-                <div class="activity-amount amount-red">&#8377;1200</div>
-            </div>
-            <div class="activity-row">
-                <div class="activity-row-left">
-                    <div class="activity-icon" style="color: #F43F5E;"><i class="fas fa-shopping-bag"></i></div>
-                    <div class="activity-info">
-                        <div class="activity-title">Swiggy Order</div>
-                        <div class="activity-subtitle">Manual</div>
-                    </div>
-                </div>
-                <div class="activity-amount amount-red">&#8377;250</div>
-            </div>
-            <div class="activity-row">
-                <div class="activity-row-left">
-                    <div class="activity-icon" style="color: #10B981;"><i class="fas fa-money-bill-wave"></i></div>
-                    <div class="activity-info">
-                        <div class="activity-title">Salary</div>
-                        <div class="activity-subtitle">Auto</div>
-                    </div>
-                </div>
-                <div class="activity-amount amount-green">&#8377;50000</div>
-            </div>
-            <div class="activity-row">
-                <div class="activity-row-left">
-                    <div class="activity-icon" style="color: #3B82F6;"><i class="fas fa-film"></i></div>
-                    <div class="activity-info">
-                        <div class="activity-title">Movie Ticket</div>
-                        <div class="activity-subtitle">Manual</div>
-                    </div>
-                </div>
-                <div class="activity-amount amount-red">&#8377;300</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="chart-section full-width">
-    <div class="chart-card">
-        <h3>Recent Transaction</h3>
-        <div class="recent-transaction-list">
-            <!-- Iterate over recent_transactions -->
             {% for t in recent_transactions %}
-            <div class="recent-tx-row">
-                <div class="tx-row-left">
-                    <div class="tx-icon">
-                        {% if t.category.type == 'income' %}<i class="fas fa-arrow-down" style="color: #10B981;"></i>
-                        {% else %}<i class="fas fa-arrow-up" style="color: #F43F5E;"></i>{% endif %}
+            <div class="activity-row">
+                <div class="activity-row-left">
+                    <div class="activity-icon" style="color: {% if t.category.type == 'income' %}#10B981{% else %}#F43F5E{% endif %}; background: {% if t.category.type == 'income' %}#D1FAE5{% else %}#FFE4E6{% endif %};">
+                        {% if t.category.type == 'income' %}<i class="fas fa-arrow-down"></i>{% else %}<i class="fas fa-arrow-up"></i>{% endif %}
                     </div>
-                    <div class="tx-info">
-                        <div class="tx-title">{{ t.title }}</div>
-                        <div class="tx-subtitle">{{ t.category.name }} - {{ t.date|date:"m/d/Y" }}</div>
+                    <div class="activity-info">
+                        <div class="activity-title">{{ t.title }}</div>
+                        <div class="activity-subtitle">{{ t.category.name }} - {{ t.date|date:"M d, Y" }}</div>
                     </div>
                 </div>
-                <div class="tx-amount {% if t.category.type == 'income' %}amount-green{% else %}amount-red{% endif %}">
-                    {% if t.category.type == 'expense' %}-{% endif %}&#8377; {{ t.amount|floatformat:2 }}
+                <div class="activity-amount {% if t.category.type == 'income' %}amount-green{% else %}amount-red{% endif %}">
+                    {% if t.category.type == 'expense' %}-{% endif %}&#8377;{{ t.amount|floatformat:0 }}
                 </div>
             </div>
             {% empty %}
-            <!-- Mock to match screenshot if empty -->
-            <div class="recent-tx-row">
-                <div class="tx-row-left">
-                    <div class="tx-icon"><img src="/static/images/entertainment_icon.png" onerror="this.outerHTML='<i class=\'fas fa-film\'></i>'" style="width:24px;"></div>
-                    <div class="tx-info">
-                        <div class="tx-title">Movie tickets and streaming</div>
-                        <div class="tx-subtitle">Entertainment - 3/16/2026</div>
-                    </div>
-                </div>
-                <div class="tx-amount amount-red">-&#8377; 319.00</div>
-            </div>
-            <div class="recent-tx-row">
-                <div class="tx-row-left">
-                    <div class="tx-icon"><img src="/static/images/shopping_icon.png" onerror="this.outerHTML='<i class=\'fas fa-shopping-bag\'></i>'" style="width:24px;"></div>
-                    <div class="tx-info">
-                        <div class="tx-title">Clothing and accessories</div>
-                        <div class="tx-subtitle">Shopping - 3/14/2026</div>
-                    </div>
-                </div>
-                <div class="tx-amount amount-red">-&#8377; 1200.00</div>
-            </div>
-            <div class="recent-tx-row">
-                <div class="tx-row-left">
-                    <div class="tx-icon"><img src="/static/images/bills_icon.png" onerror="this.outerHTML='<i class=\'fas fa-file-invoice\'></i>'" style="width:24px;"></div>
-                    <div class="tx-info">
-                        <div class="tx-title">Electricity</div>
-                        <div class="tx-subtitle">Bills - 3/16/2026</div>
-                    </div>
-                </div>
-                <div class="tx-amount amount-red">-&#8377; 500.00</div>
-            </div>
-            <div class="recent-tx-row">
-                <div class="tx-row-left">
-                    <div class="tx-icon"><img src="/static/images/transport_icon.png" onerror="this.outerHTML='<i class=\'fas fa-car\'></i>'" style="width:24px;"></div>
-                    <div class="tx-info">
-                        <div class="tx-title">Public transport</div>
-                        <div class="tx-subtitle">Transportation - 3/16/2026</div>
-                    </div>
-                </div>
-                <div class="tx-amount amount-red">-&#8377; 200.00</div>
+            <div class="empty-state">
+                <p>No recent activity.</p>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
+
 
 {% endblock %}
 
@@ -339,15 +238,18 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(ctxDoughnut, {
         type: 'doughnut',
         data: {
-            labels: ['Food & Dining', 'Shopping', 'Bills & Utilities', 'Transportation', 'Entertainment'],
+            labels: {{ expense_categories_labels|safe|default:"['Food & Dining', 'Shopping', 'Bills & Utilities', 'Transportation', 'Entertainment']" }},
             datasets: [{
-                data: [38, 29, 17, 10, 7], 
+                data: {{ expense_categories_data|safe|default:"[38, 29, 17, 10, 7]" }}, 
                 backgroundColor: [
                     '#3B82F6', // Blue
                     '#FBBF24', // Yellow
                     '#EF4444', // Red
                     '#C084FC', // Purple
-                    '#10B981'  // Green
+                    '#10B981', // Green
+                    '#F472B6', // Pink
+                    '#F97316', // Orange
+                    '#14B8A6'  // Teal
                 ],
                 borderWidth: 0,
                 cutout: '75%'
@@ -357,7 +259,17 @@ document.addEventListener("DOMContentLoaded", function() {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
+                legend: { 
+                    display: true, 
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 8,
+                        font: {
+                            size: 11
+                        }
+                    }
+                }
             }
         }
     });

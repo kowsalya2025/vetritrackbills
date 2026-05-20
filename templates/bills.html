@@ -4,7 +4,7 @@
 {% block title %}Bills{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/bills.css' %}">
+<link rel="stylesheet" href="{% static 'css/bills.css' %}?v=1.1">
 {% endblock %}
 
 {% block page_title %}Bills{% endblock %}
@@ -14,26 +14,29 @@
 <div class="bills-container">
     <!-- Summary Section -->
     <div class="bills-summary-grid">
-        <div class="summary-card card-total">
-            <div class="card-info">
-                <h3>Total Bills</h3>
-                <p>₹ {{ total_bills|floatformat:2 }}</p>
+        <div class="summary-card card-balance">
+            <div class="card-header">
+                <div class="card-title">Total Bills</div>
+                <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            <div class="card-amount">₹{{ total_bills|floatformat:2 }}</div>
+            <div class="card-label">All bills combined</div>
         </div>
-        <div class="summary-card card-paid">
-            <div class="card-info">
-                <h3>Paid This Month</h3>
-                <p>₹ {{ paid_this_month|floatformat:2 }}</p>
+        <div class="summary-card card-income">
+            <div class="card-header">
+                <div class="card-title">Paid This Month</div>
+                <div class="card-icon"><i class="fas fa-check-circle"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="card-amount">₹{{ paid_this_month|floatformat:2 }}</div>
+            <div class="card-label">Successfully paid</div>
         </div>
-        <div class="summary-card card-pending">
-            <div class="card-info">
-                <h3>Pending Bills</h3>
-                <p>₹ {{ pending_bills|floatformat:2 }}</p>
+        <div class="summary-card card-expense">
+            <div class="card-header">
+                <div class="card-title">Pending Bills</div>
+                <div class="card-icon"><i class="fas fa-exclamation-circle"></i></div>
             </div>
-            <div class="card-icon"><i class="fas fa-exclamation-circle"></i></div>
+            <div class="card-amount">₹{{ pending_bills|floatformat:2 }}</div>
+            <div class="card-label">Waiting for payment</div>
         </div>
     </div>
 

@@ -200,9 +200,12 @@ body {
 }
 
 /* Summary Cards */
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.summary-grid,
+.reports-summary-grid,
+.bills-summary-grid,
+.accounts-summary-grid {
+    display: flex;
+    flex-wrap: nowrap;
     gap: 20px;
     margin-bottom: 25px;
 }
@@ -344,110 +347,110 @@ body {
 }
 
 .summary-card {
-    background-color: rgba(255, 255, 255, 0.96);
-    border-radius: 13px;
-    padding: 22px;
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 3px 13px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    flex: 1;
+    min-width: 0;
 }
 
-.summary-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    border-radius: 0 0 13px 13px;
+/* Balance / Purple */
+.card-balance {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath fill='%236C4CF1' fill-opacity='0.25' d='M0,90 C40,70 60,110 100,50 L100,100 L0,100 Z'/%3E%3Cpath fill='%236C4CF1' fill-opacity='0.9' d='M0,100 C40,85 70,115 100,70 L100,100 L0,100 Z'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+}
+.card-balance .card-icon {
+    background: #6C4CF1;
+    color: white;
+}
+.card-balance .card-amount {
+    color: #6C4CF1;
 }
 
-.card-balance::before {
-    background: linear-gradient(135deg, rgba(108, 76, 241, 0.3) 0%, rgba(151, 71, 255, 0.2) 100%);
+/* Income / Green */
+.card-income {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath fill='%2310B981' fill-opacity='0.25' d='M0,90 C40,70 60,110 100,50 L100,100 L0,100 Z'/%3E%3Cpath fill='%2310B981' fill-opacity='0.9' d='M0,100 C40,85 70,115 100,70 L100,100 L0,100 Z'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+}
+.card-income .card-icon {
+    background: #10B981;
+    color: white;
+}
+.card-income .card-amount {
+    color: #10B981;
 }
 
-.card-income::before {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(6, 146, 100, 0.2) 100%);
+/* Expense / Red */
+.card-expense {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath fill='%23F43F5E' fill-opacity='0.25' d='M0,90 C40,70 60,110 100,50 L100,100 L0,100 Z'/%3E%3Cpath fill='%23F43F5E' fill-opacity='0.9' d='M0,100 C40,85 70,115 100,70 L100,100 L0,100 Z'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+}
+.card-expense .card-icon {
+    background: #F43F5E;
+    color: white;
+}
+.card-expense .card-amount {
+    color: #F43F5E;
 }
 
-.card-expense::before {
-    background: linear-gradient(135deg, rgba(244, 63, 94, 0.3) 0%, rgba(197, 29, 58, 0.2) 100%);
+/* Savings / Yellow */
+.card-savings {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath fill='%23FACC15' fill-opacity='0.3' d='M0,90 C40,70 60,110 100,50 L100,100 L0,100 Z'/%3E%3Cpath fill='%23FACC15' fill-opacity='1' d='M0,100 C40,85 70,115 100,70 L100,100 L0,100 Z'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
 }
-
-.card-savings::before {
-    background: linear-gradient(135deg, rgba(250, 204, 21, 0.3) 0%, rgba(212, 147, 7, 0.2) 100%);
+.card-savings .card-icon {
+    background: #FACC15;
+    color: #422006;
+}
+.card-savings .card-amount {
+    color: #EAB308;
 }
 
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 17px;
     position: relative;
     z-index: 1;
-}
-
-.card-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: white;
-}
-
-.card-balance .card-icon {
-    background: linear-gradient(135deg, #6C4CF1 0%, #9747FF 100%);
-}
-
-.card-income .card-icon {
-    background: linear-gradient(135deg, #10B981 0%, #069264 100%);
-}
-
-.card-expense .card-icon {
-    background: linear-gradient(135deg, #F43F5E 0%, #C51D3A 100%);
-}
-
-.card-savings .card-icon {
-    background: linear-gradient(135deg, #FACC15 0%, #D49307 100%);
+    margin-bottom: auto;
 }
 
 .card-title {
     font-size: 16px;
-    font-weight: 700;
-    color: #2d3436;
+    font-weight: 500;
+    color: #111827;
+}
+
+.card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
 }
 
 .card-amount {
-    font-size: 25px;
-    font-weight: 800;
-    margin-bottom: 4px;
+    font-size: 28px;
+    font-weight: 600;
+    margin-top: 18px;
+    margin-bottom: 6px;
     position: relative;
     z-index: 1;
-}
-
-.card-balance .card-amount {
-    color: #6C4CF1;
-}
-
-.card-income .card-amount {
-    color: #10B981;
-}
-
-.card-expense .card-amount {
-    color: #F43F5E;
-}
-
-.card-savings .card-amount {
-    color: #D49307;
+    font-family: inherit;
 }
 
 .card-label {
     font-size: 13px;
-    color: #717171;
-    font-weight: 600;
+    color: #6B7280;
+    font-weight: 500;
     position: relative;
     z-index: 1;
 }
@@ -960,7 +963,8 @@ body {
 }
 
 @media (max-width: 1200px) {
-    .summary-grid {
+    .summary-grid,
+    .reports-summary-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -985,7 +989,8 @@ body {
         display: none;
     }
     
-    .summary-grid {
+    .summary-grid,
+    .reports-summary-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1016,17 +1021,26 @@ body {
 /* New Dashboard Dynamic Pages CSS */
 
 .bills-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 25px;
+    /* Styles merged into .summary-grid at top */
 }
 
 .reports-summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
     margin-bottom: 25px;
+}
+
+@media (max-width: 1200px) {
+    .reports-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .reports-summary-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .wave-card {

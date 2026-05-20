@@ -4,7 +4,7 @@
 {% block title %}Transactions{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/transactions.css' %}">
+<link rel="stylesheet" href="{% static 'css/transactions.css' %}?v=1.1">
 {% endblock %}
 
 {% block page_title %}Transactions{% endblock %}
@@ -13,36 +13,30 @@
 {% block content %}
 <div class="transactions-container">
     <!-- Summary Cards -->
-    <section class="reports-summary-grid" style="margin-bottom: 30px;">
-        <div class="summary-card wave-card wave-green">
+    <section class="transactions-summary-grid">
+        <div class="summary-card card-income">
             <div class="card-header">
-                <div>
-                    <h3 class="card-title">Total Income</h3>
-                    <p class="card-amount">&#8377; {{ total_income|floatformat:2 }}</p>
-                </div>
+                <div class="card-title">Total Income</div>
                 <div class="card-icon"><i class="fas fa-hand-holding-usd"></i></div>
             </div>
-            <p class="card-label">Income for selected period</p>
+            <div class="card-amount">&#8377; {{ total_income|floatformat:2 }}</div>
+            <div class="card-label">Income for selected period</div>
         </div>
-        <div class="summary-card wave-card wave-red">
+        <div class="summary-card card-expense">
             <div class="card-header">
-                <div>
-                    <h3 class="card-title">Total Expenses</h3>
-                    <p class="card-amount">&#8377; {{ total_expense|floatformat:2 }}</p>
-                </div>
+                <div class="card-title">Total Expenses</div>
                 <div class="card-icon"><i class="fas fa-receipt"></i></div>
             </div>
-            <p class="card-label">Expenses for selected period</p>
+            <div class="card-amount">&#8377; {{ total_expense|floatformat:2 }}</div>
+            <div class="card-label">Expenses for selected period</div>
         </div>
-        <div class="summary-card wave-card wave-blue">
+        <div class="summary-card card-balance">
             <div class="card-header">
-                <div>
-                    <h3 class="card-title">Net Balance</h3>
-                    <p class="card-amount">&#8377; {{ net_balance|floatformat:2 }}</p>
-                </div>
+                <div class="card-title">Net Balance</div>
                 <div class="card-icon"><i class="fas fa-wallet"></i></div>
             </div>
-            <p class="card-label">Balance for selected period</p>
+            <div class="card-amount">&#8377; {{ net_balance|floatformat:2 }}</div>
+            <div class="card-label">Balance for selected period</div>
         </div>
     </section>
 
